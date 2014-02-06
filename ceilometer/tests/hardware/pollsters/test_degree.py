@@ -18,21 +18,16 @@
 
 from ceilometer.hardware.pollsters import degree
 from ceilometer import sample
-
-from . import base
+from ceilometer.tests.hardware.pollsters import base
 
 
 class TestDegreePollsters(base.TestPollsterBase):
     def test_degree_temperature_current(self):
         self._check_get_samples(degree.DegreeTemperaturePollster,
                                 'degree.temperature.current',
-                                30, sample.TYPE_GAUGE,
-                                degree.DegreeTemperaturePollster.
-                                CACHE_KEY_TEMPERATURE)
+                                30, sample.TYPE_CUMULATIVE)
 
     def test_degree_status_current(self):
         self._check_get_samples(degree.DegreeStatusPollster,
                                 'degree.status.current',
-                                "ok", sample.TYPE_GAUGE,
-                                degree.DegreeStatusPollster.
-                                CACHE_KEY_TEMPERATURE)
+                                "ok", sample.TYPE_CUMULATIVE)

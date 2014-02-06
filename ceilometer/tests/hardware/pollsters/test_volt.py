@@ -18,19 +18,16 @@
 
 from ceilometer.hardware.pollsters import volt
 from ceilometer import sample
-
-from . import base
+from ceilometer.tests.hardware.pollsters import base
 
 
 class TestVoltPollsters(base.TestPollsterBase):
     def test_volt_voltage_current(self):
         self._check_get_samples(volt.VoltVoltagePollster,
                                 'volt.voltage.current',
-                                0.896, sample.TYPE_GAUGE,
-                                volt.VoltVoltagePollster.CACHE_KEY_VOLTAGE)
+                                0.896, sample.TYPE_CUMULATIVE)
 
     def test_rpm_status_current(self):
         self._check_get_samples(volt.VoltStatusPollster,
                                 'volt.status.current',
-                                "ok", sample.TYPE_GAUGE,
-                                volt.VoltStatusPollster.CACHE_KEY_VOLTAGE)
+                                "ok", sample.TYPE_CUMULATIVE)

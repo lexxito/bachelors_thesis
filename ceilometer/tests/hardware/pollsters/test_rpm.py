@@ -18,17 +18,16 @@
 
 from ceilometer.hardware.pollsters import rpm
 from ceilometer import sample
-
-from . import base
+from ceilometer.tests.hardware.pollsters import base
 
 
 class TestRPMPollsters(base.TestPollsterBase):
     def test_rpm_speed_current(self):
-        self._check_get_samples(rpm.RPMSpeedPollster, 'rpm.speed.current',
-                                1470, sample.TYPE_GAUGE,
-                                rpm.RPMSpeedPollster.CACHE_KEY_SPEED)
+        self._check_get_samples(rpm.RPMSpeedPollster,
+                                'rpm.speed.current',
+                                1470, sample.TYPE_CUMULATIVE)
 
     def test_rpm_status_current(self):
-        self._check_get_samples(rpm.RPMStatusPollster, 'rpm.status.current',
-                                "ok", sample.TYPE_GAUGE,
-                                rpm.RPMStatusPollster.CACHE_KEY_SPEED)
+        self._check_get_samples(rpm.RPMStatusPollster,
+                                'rpm.status.current',
+                                "ok", sample.TYPE_CUMULATIVE)

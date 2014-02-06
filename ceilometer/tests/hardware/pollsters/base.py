@@ -38,6 +38,15 @@ class FakeInspector(inspector_base.Inspector):
                                          rx_bytes=90,
                                          tx_bytes=80,
                                          error=1))
+    RPM = (inspector_base.RPM(name="FAN"),
+           inspector_base.RPMStats(speed=1470,
+           status="ok"))
+    VOLT = (inspector_base.Volt(name="Vcore"),
+            inspector_base.VoltStats(voltage=0.896,
+            status="ok"))
+    DEGREE = (inspector_base.Degree(name="System Temp"),
+              inspector_base.DegreeStats(temperature=30.000,
+              status="ok"))
 
     def inspect_cpu(self, host):
         yield self.CPU
@@ -50,6 +59,15 @@ class FakeInspector(inspector_base.Inspector):
 
     def inspect_network(self, host):
         yield self.NET
+
+    def inspect_speed(self, host):
+        yield self.RPM
+
+    def inspect_voltage(self, host):
+        yield self.VOLT
+
+    def inspect_temperature(self, host):
+        yield self.DEGREE
 
 
 class TestPollsterBase(test_base.BaseTestCase):

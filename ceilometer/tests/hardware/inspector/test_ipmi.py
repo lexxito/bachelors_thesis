@@ -22,52 +22,38 @@
 from ceilometer.hardware.inspector import ipmi
 from ceilometer.openstack.common import network_utils
 from ceilometer.tests import base as test_base
+from ceilometer.tests.hardware.inspector import base
 
-
-from .base import InspectorBaseTestIPMI as BaseIPMI
+BaseIPMI = base.InspectorBaseTestIPMI
 
 fake_sensor_output = (BaseIPMI.rpm[0][0].name + "|"
                       + str(BaseIPMI.rpm[0][1].speed) + "|"
                       + "RPM" + "|"
-                      + BaseIPMI.rpm[0][1].status) + "|" + "\n" +\
+                      + BaseIPMI.rpm[0][1].status) + "|" + "\n" + \
                      (BaseIPMI.rpm[1][0].name + "|"
                       + str(BaseIPMI.rpm[1][1].speed) + "|"
                       + "RPM" + "|" + BaseIPMI.rpm[1][1].status) + "|" + "\n"
 fake_sensor_output += (BaseIPMI.volt[0][0].name + "|"
                        + str(BaseIPMI.volt[0][1].voltage) + "|"
-                       + "Volts" + "|" + BaseIPMI.volt[0][1].status) + "\n" +\
+                       + "Volts" + "|" + BaseIPMI.volt[0][1].status) + "\n" + \
                       (BaseIPMI.volt[1][0].name + "|"
                        + str(BaseIPMI.volt[1][1].voltage) + "|"
                        + "Volts" + "|" + BaseIPMI.volt[1][1].status) + "\n"
 fake_sensor_output += (BaseIPMI.degree[0][0].name + "|"
                        + str(BaseIPMI.degree[0][1].temperature) + "|"
                        + "degrees C" + "|"
-                       + BaseIPMI.degree[0][1].status) + "\n" +\
+                       + BaseIPMI.degree[0][1].status) + "\n" + \
                       (BaseIPMI.degree[1][0].name + "|"
                        + str(BaseIPMI.degree[1][1].temperature) + "|"
                        + "degrees C" + "|"
                        + BaseIPMI.degree[1][1].status) + "\n"
-fake_sys_output = (BaseIPMI.syslog[0][0].number + "|"
-                   + BaseIPMI.syslog[0][1].date.split(" ")[0] + "|"
-                   + BaseIPMI.syslog[0][1].date.split(" ")[1] + "|"
-                   + BaseIPMI.syslog[0][1].log_type
-                   + "|" + BaseIPMI.syslog[0][1].interpretation) + "\n"
-fake_sys_output += (BaseIPMI.syslog[1][0].number + "|"
-                    + BaseIPMI.syslog[1][1].date.split(" ")[0] + "|"
-                    + BaseIPMI.syslog[1][1].date.split(" ")[1] + "|"
-                    + BaseIPMI.syslog[1][1].log_type
-                    + "|" + BaseIPMI.syslog[1][1].interpretation) + "\n"
 
 
 def fake_sensor_list(autoHost):
     return fake_sensor_output
 
 
-def fake_sys_list(autoHost):
-    return fake_sys_output
-
-
-class TestIPMIInspector(BaseIPMI, test_base.TestCase):
+class TestIPMIInspector(BaseIPMI, test_base.BaseTestCase):
     def setUp(self):
         super(TestIPMIInspector, self).setUp()
         self.inspector = ipmi.IPMIInspector()
@@ -75,6 +61,3 @@ class TestIPMIInspector(BaseIPMI, test_base.TestCase):
         self.stubs.Set(self.inspector,
                        'execute_sensor_ipmi_command',
                        fake_sensor_list)
-        self.stubs.Set(self.inspector,
-                       'execute_syslog_ipmi_command',
-                       fake_sys_list)

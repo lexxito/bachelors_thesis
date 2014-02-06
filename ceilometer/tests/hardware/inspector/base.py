@@ -61,3 +61,45 @@ class InspectorBaseTest(object):
     def test_inspect_memory(self):
         self.assertEqual(list(self.inspector.inspect_memory(self.host)),
                          self.memory)
+
+
+class InspectorBaseTestIPMI(object):
+    """Subclass must set self.inspector and self.host in
+    self.setUp()
+    """
+
+    rpm = [(base.RPM(name="FAN 1"),
+            base.RPMStats(speed=14985.0, status='ok')
+           ),
+           (base.RPM(name="FAN 2"),
+            base.RPMStats(speed=16788.0, status='ok')
+           ),
+
+           ]
+    degree = [(base.Degree(name="System Temp"),
+               base.DegreeStats(temperature=33.0, status='ok')
+              ),
+              (base.Degree(name="CPU Temp"),
+               base.DegreeStats(temperature=48.0, status='ok')
+              ),
+              ]
+    volt = [(base.Volt(name="Vcore"),
+             base.VoltStats(voltage=1.23, status='ok'),
+            ),
+            (base.Volt(name="12V"),
+             base.VoltStats(voltage=12.4, status='ok'),
+            ),
+            ]
+
+
+    def test_inspect_speed(self):
+        self.assertEqual(list(self.inspector.inspect_speed(self.host)),
+                         self.rpm)
+
+    def test_inspect_temperature(self):
+        self.assertEqual(list(self.inspector.inspect_temperature(self.host)),
+                         self.degree)
+
+    def test_inspect_voltage(self):
+        self.assertEqual(list(self.inspector.inspect_voltage(self.host)),
+                         self.volt)
